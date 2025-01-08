@@ -41,6 +41,16 @@ EXPOSE 8188
 # Start both ComfyUI and the bridge (using a shell script)
 WORKDIR /app/ComfyUI
 
+# Set environment variables for remote GPU access
+ENV CUDA_VISIBLE_DEVICES=0 # Or the appropriate device ID if you have multiple GPUs
+ENV CUDA_DEVICE_ORDER=PCI_BUS_ID # Important for consistency
+ENV DISPLAY=:0 # If you are using X11 forwarding (less likely with just CUDA)
+#Add these lines if you are using nvidia-container-runtime
+ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
+ENV NVIDIA_VISIBLE_DEVICES all
+# Start both ComfyUI and the bridge (using a shell script)
+WORKDIR /app
+
 COPY start.sh /app/
 
 RUN chmod +x /app/start.sh
